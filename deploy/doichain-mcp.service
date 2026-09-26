@@ -1,0 +1,47 @@
+[Unit]
+Description=Doichain MCP-Server (Model Context Protocol vor der Doichain REST API)
+Documentation=https://doi-api.sendlabs.de/mcp
+After=network-online.target doichain-api.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=doimcp
+Group=doimcp
+# Eigene Umgebungsdatei nur mit API-Adresse und dem oeffentlichen poe-Schluessel. Kein Zugriff auf
+# /etc/doichain-api (RPC-Passwort, write- und admin-Schluessel).
+EnvironmentFile=/etc/doichain-mcp/doichain-mcp.env
+WorkingDirectory=/opt/doichain-mcp/app
+ExecStart=/opt/doichain-mcp/venv/bin/uvicorn doichain_mcp.server:app --host 127.0.0.1 --port 8081 --workers 2 --proxy-headers --forwarded-allow-ips 127.0.0.1 --no-server-header --no-access-log --timeout-graceful-shutdown 10
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+LockPersonality=yes
+MemoryMax=512M
+# Nur lokale Verbindungen: nginx ruft den Dienst auf, der Dienst ruft nur die REST-API auf 127.0.0.1.
+IPAddressDeny=any
+IPAddressAllow=localhost
+PrivateDevices=yes
+ProtectKernelLogs=yes
+ProtectClock=yes
+ProtectHostname=yes
+ProtectProc=invisible
+ProcSubset=pid
+RestrictNamespaces=yes
+RestrictRealtime=yes
+SystemCallArchitectures=native
+SystemCallFilter=@system-service
+CapabilityBoundingSet=
+AmbientCapabilities=
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target

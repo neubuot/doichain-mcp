@@ -1,0 +1,5 @@
+{
+  "servers": {
+    "doichain": { "type": "http", "url": "https://doi-api.sendlabs.de/mcp" }
+  }
+}

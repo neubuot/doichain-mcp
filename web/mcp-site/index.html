@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Doichain MCP: Ihr KI-Agent als Blockchain-Notar</title>
+  <meta name="description" content="MCP-Server für die Doichain: Claude, ChatGPT, Cursor und andere KI-Agenten verankern Dokumente fälschungssicher, prüfen Nachweise und lesen Namen und Blöcke. Ohne Konto, ohne Installation.">
+  <meta name="theme-color" content="#0b1020">
+  <link rel="canonical" href="https://doi-api.sendlabs.de/mcp">
+  <meta property="og:title" content="Doichain MCP: Ihr KI-Agent als Blockchain-Notar">
+  <meta property="og:description" content="Ein Link, und Ihr KI-Agent verankert Dokumente fälschungssicher in der Doichain und prüft Nachweise.">
+  <meta property="og:url" content="https://doi-api.sendlabs.de/mcp">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="/mcp-site/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/mcp-site/style.css">
+  <script src="/mcp-site/app.js" defer></script>
+</head>
+<body>
+  <div class="bg" aria-hidden="true"><div class="orb a"></div><div class="orb b"></div><div class="orb c"></div><div class="grid"></div></div>
+
+  <header>
+    <a class="brand" href="/mcp"><img src="/mcp-site/icon.svg" width="30" height="30" alt="">Doichain MCP</a>
+    <nav>
+      <a href="#demo" data-i18n="nav.demo">Beispiele</a>
+      <a href="#connect" data-i18n="nav.connect">Einbinden</a>
+      <a href="#tools" data-i18n="nav.tools">Werkzeuge</a>
+      <a href="#trust" data-i18n="nav.trust">Sicherheit</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <button class="lang" id="langBtn" type="button" aria-label="Sprache wechseln / switch language">EN</button>
+  </header>
+
+  <main>
+    <section class="hero">
+      <p class="eyebrow" data-i18n="hero.eyebrow">Model Context Protocol · Doichain</p>
+      <h1 data-i18n="hero.title">Ihr KI-Agent als <span class="g">Blockchain-Notar</span>.</h1>
+      <p class="lead" data-i18n="hero.lead">Ein Link genügt: Claude, ChatGPT, Cursor oder jeder andere MCP-fähige Agent verankert Dokumente fälschungssicher in der Doichain, prüft Nachweise und liest Namen und Blöcke. Ohne Konto, ohne Schlüssel, ohne Installation.</p>
+
+      <div class="endpoint" role="group" aria-label="MCP-Adresse">
+        <span class="ep-label" data-i18n="hero.endpoint">MCP-Adresse</span>
+        <code id="endpoint">https://doi-api.sendlabs.de/mcp</code>
+        <button class="copy" type="button" data-copy="endpoint" data-i18n="copy">Kopieren</button>
+      </div>
+
+      <div class="cta">
+        <a class="btn primary" href="#connect" data-i18n="hero.cta1">In 30 Sekunden einbinden</a>
+        <a class="btn" href="#tools" data-i18n="hero.cta2">13 Werkzeuge ansehen</a>
+      </div>
+      <div class="status-line"><span class="dot" id="dot"></span><span id="statusText" data-i18n="status.loading">Doichain wird abgefragt …</span></div>
+    </section>
+
+    <section id="demo">
+      <h2 data-i18n="demo.title">Sagen Sie es einfach Ihrem Agenten</h2>
+      <p class="sub" data-i18n="demo.sub">Kein Code, keine Befehle. Der Agent wählt das passende Werkzeug selbst.</p>
+      <div class="chats">
+        <article class="chat">
+          <p class="msg user" data-i18n="demo.q1">Verankere den Hash von angebot-2026.pdf in der Doichain.</p>
+          <p class="msg bot" data-i18n="demo.a1">Erledigt. Ich habe den SHA-256 lokal berechnet und verankert. Transaktion <code>8067f0df…</code>, bestätigt im nächsten Block (meist unter 10 Minuten). Prüfbar für jeden unter <code>verifile.it/#3f9a…c21e</code>.</p>
+          <span class="tool">anchor_proof</span>
+        </article>
+        <article class="chat">
+          <p class="msg user" data-i18n="demo.q2">Gab es dieses Dokument schon vor dem 1. Oktober?</p>
+          <p class="msg bot" data-i18n="demo.a2">Ja. Genau diese Datei wurde am 25.09.2026 um 23:21 UTC in Block 433.335 verankert. Schon eine Änderung um ein Zeichen ergäbe einen anderen Hash.</p>
+          <span class="tool">check_proof</span>
+        </article>
+        <article class="chat">
+          <p class="msg user" data-i18n="demo.q3">Laufen d/beispiel oder id/alice bald ab?</p>
+          <p class="msg bot" data-i18n="demo.a3"><strong>d/beispiel</strong> ist noch rund 228 Tage aktiv (bis etwa 12.05.2027). <strong>id/alice</strong> ist nicht registriert, der Name ist frei.</p>
+          <span class="tool">check_name_expiry</span>
+        </article>
+        <article class="chat">
+          <p class="msg user" data-i18n="demo.q4">Wie geht es der Doichain gerade?</p>
+          <p class="msg bot" data-i18n="demo.a4">Synchron bei Block 433.427, letzter Block vor 7 Minuten, im Mittel 9 Minuten Blockabstand, Fork-Prüfung in Ordnung, 15 Verbindungen.</p>
+          <span class="tool">get_chain_status</span>
+        </article>
+      </div>
+    </section>
+
+    <section id="how">
+      <h2 data-i18n="how.title">So entsteht ein Nachweis</h2>
+      <p class="sub" data-i18n="how.sub">Das Dokument verlässt nie Ihren Rechner. Auf die Kette kommt nur sein digitaler Fingerabdruck.</p>
+      <ol class="steps">
+        <li><span class="num">1</span><h3 data-i18n="how.s1t">Fingerabdruck berechnen</h3><p data-i18n="how.s1">Der Agent berechnet den SHA-256 der Datei auf Ihrem Rechner, zum Beispiel mit <code>sha256sum</code>. Dafür braucht er Zugriff auf die Datei, etwa in Claude Code, Cursor oder VS Code. Im reinen Chat geht es am einfachsten mit <a href="https://verifile.it/">verifile.it</a>.</p></li>
+        <li><span class="num">2</span><h3 data-i18n="how.s2t">In der Doichain verankern</h3><p data-i18n="how.s2"><code>anchor_proof</code> schreibt den Namen <code>poe/&lt;hash&gt;</code> in die Blockchain. Mit dem nächsten Block ist der Zeitpunkt fälschungssicher festgehalten.</p></li>
+        <li><span class="num">3</span><h3 data-i18n="how.s3t">Jederzeit prüfen</h3><p data-i18n="how.s3">Jeder kann später mit <code>check_proof</code> oder auf <a href="https://verifile.it/">verifile.it</a> zeigen, dass genau dieses Dokument zu diesem Zeitpunkt existierte.</p></li>
+      </ol>
+    </section>
+
+    <section id="connect">
+      <h2 data-i18n="connect.title">In 30 Sekunden eingebunden</h2>
+      <p class="sub" data-i18n="connect.sub">Transport Streamable HTTP, keine Anmeldung nötig. Adresse eintragen, fertig.</p>
+      <div class="panel">
+        <div class="tabs" role="tablist" id="connectTabs">
+          <button class="tab on" type="button" role="tab" id="tab-claude-code" aria-selected="true" aria-controls="pane-claude-code" data-t="claude-code">Claude Code</button>
+          <button class="tab" type="button" role="tab" id="tab-claude-app" aria-selected="false" aria-controls="pane-claude-app" data-t="claude-app">Claude (Web &amp; Desktop)</button>
+          <button class="tab" type="button" role="tab" id="tab-chatgpt" aria-selected="false" aria-controls="pane-chatgpt" data-t="chatgpt">ChatGPT</button>
+          <button class="tab" type="button" role="tab" id="tab-cursor" aria-selected="false" aria-controls="pane-cursor" data-t="cursor">Cursor</button>
+          <button class="tab" type="button" role="tab" id="tab-vscode" aria-selected="false" aria-controls="pane-vscode" data-t="vscode">VS Code</button>
+          <button class="tab" type="button" role="tab" id="tab-other" aria-selected="false" aria-controls="pane-other" data-t="other" data-i18n="connect.other">Andere</button>
+        </div>
+
+        <div class="pane on" role="tabpanel" id="pane-claude-code" aria-labelledby="tab-claude-code" data-p="claude-code">
+          <p data-i18n="connect.cc">Im Terminal einmal ausführen, danach steht der Server in allen Projekten zur Verfügung:</p>
+          <div class="code"><pre id="c-cc">claude mcp add --scope user --transport http doichain https://doi-api.sendlabs.de/mcp</pre><button class="copy" type="button" data-copy="c-cc" data-i18n="copy">Kopieren</button></div>
+          <p class="hint" data-i18n="connect.cc2">Prüfen mit <code>claude mcp list</code>. Ohne <code>--scope user</code> gilt der Server nur im aktuellen Projekt. Mit eigenem Schlüssel ohne Tageskontingent: <code>--header "X-API-Key: …"</code> anhängen.</p>
+        </div>
+
+        <div class="pane" role="tabpanel" id="pane-claude-app" aria-labelledby="tab-claude-app" data-p="claude-app">
+          <ol class="list">
+            <li data-i18n="connect.ca1">In Claude <strong>Anpassen → Konnektoren</strong> öffnen (englisch <em>Customize → Connectors</em>) und auf <strong>+</strong> klicken.</li>
+            <li data-i18n="connect.ca2"><strong>Benutzerdefinierten Konnektor hinzufügen</strong> wählen (<em>Add custom connector</em>).</li>
+            <li data-i18n="connect.ca3">Name <strong>Doichain</strong>, als URL die MCP-Adresse eintragen und speichern.</li>
+            <li data-i18n="connect.ca4">Im Chat unten links über <strong>+ → Konnektoren</strong> „Doichain“ einschalten und loslegen.</li>
+          </ol>
+          <div class="code"><pre id="c-ca">https://doi-api.sendlabs.de/mcp</pre><button class="copy" type="button" data-copy="c-ca" data-i18n="copy">Kopieren</button></div>
+          <p class="hint" data-i18n="connect.ca5">Geht auch im kostenlosen Tarif (dort ein eigener Konnektor). In Team und Enterprise richtet ein Owner den Konnektor unter den Organisationseinstellungen ein.</p>
+        </div>
+
+        <div class="pane" role="tabpanel" id="pane-chatgpt" aria-labelledby="tab-chatgpt" data-p="chatgpt">
+          <ol class="list">
+            <li data-i18n="connect.gp1">In ChatGPT unter <strong>Einstellungen → Sicherheit und Anmeldung</strong> den <strong>Entwicklermodus</strong> einschalten (englisch <em>Settings → Security and login → Developer mode</em>).</li>
+            <li data-i18n="connect.gp2">Unter <strong>Plugins</strong> mit <strong>+</strong> eine App anlegen: Name <strong>Doichain</strong>, MCP-Adresse, Authentifizierung <strong>Keine</strong>.</li>
+            <li data-i18n="connect.gp3">Im Chat die App auswählen.</li>
+          </ol>
+          <div class="code"><pre id="c-gp">https://doi-api.sendlabs.de/mcp</pre><button class="copy" type="button" data-copy="c-gp" data-i18n="copy">Kopieren</button></div>
+          <p class="hint" data-i18n="connect.gp4">Den Entwicklermodus gibt es im Web für Plus, Pro, Business, Enterprise und Education. Menünamen können je nach Version abweichen.</p>
+        </div>
+
+        <div class="pane" role="tabpanel" id="pane-cursor" aria-labelledby="tab-cursor" data-p="cursor">
+          <p data-i18n="connect.cu">In <code>~/.cursor/mcp.json</code> (für alle Projekte) oder <code>.cursor/mcp.json</code> (nur dieses Projekt):</p>
+          <div class="code"><pre id="c-cu">{
+  "mcpServers": {
+    "doichain": { "url": "https://doi-api.sendlabs.de/mcp" }
+  }
+}</pre><button class="copy" type="button" data-copy="c-cu" data-i18n="copy">Kopieren</button></div>
+        </div>
+
+        <div class="pane" role="tabpanel" id="pane-vscode" aria-labelledby="tab-vscode" data-p="vscode">
+          <p data-i18n="connect.vs">In <code>.vscode/mcp.json</code> des Projekts, danach im Copilot-Chat im Agentenmodus nutzen:</p>
+          <div class="code"><pre id="c-vs">{
+  "servers": {
+    "doichain": { "type": "http", "url": "https://doi-api.sendlabs.de/mcp" }
+  }
+}</pre><button class="copy" type="button" data-copy="c-vs" data-i18n="copy">Kopieren</button></div>
+        </div>
+
+        <div class="pane" role="tabpanel" id="pane-other" aria-labelledby="tab-other" data-p="other">
+          <p data-i18n="connect.ot">Jeder Desktop-, Kommandozeilen- oder Server-Client mit Streamable HTTP funktioniert. Die üblichen Angaben:</p>
+          <table class="kv">
+            <tr><th data-i18n="connect.k1">Adresse</th><td><code>https://doi-api.sendlabs.de/mcp</code></td></tr>
+            <tr><th data-i18n="connect.k2">Transport</th><td>Streamable HTTP (<code>http</code>), <span data-i18n="connect.k2b">zustandslos, JSON-Antworten, keine JSON-RPC-Batches</span></td></tr>
+            <tr><th data-i18n="connect.k3">Anmeldung</th><td data-i18n="connect.k3b">keine. Optional eigener Schlüssel im Header <code>X-API-Key</code></td></tr>
+            <tr><th data-i18n="connect.k4">Protokoll</th><td>MCP 2024-11-05 <span data-i18n="connect.k4b">bis</span> 2026-07-28</td></tr>
+            <tr><th data-i18n="connect.k5">Browser</th><td data-i18n="connect.k5b">Clients, die direkt im Browser laufen, werden nicht unterstützt (kein CORS)</td></tr>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="tools">
+      <h2 data-i18n="tools.title">13 Werkzeuge für Ihren Agenten</h2>
+      <p class="sub" data-i18n="tools.sub">Lesen ist frei. Nur das Verankern schreibt auf die Kette, kostenlos im Rahmen eines Tageskontingents.</p>
+      <div class="tools">
+        <div class="t write"><span class="badge w" data-i18n="tools.write">schreibt</span><h3>anchor_proof</h3><p data-i18n="tools.anchor">Hash eines Dokuments als Nachweis verankern. Bereits verankerte Hashes werden erkannt.</p></div>
+        <div class="t"><span class="badge" data-i18n="tools.read">liest</span><h3>check_proof</h3><p data-i18n="tools.check">Ist dieser Hash verankert, seit wann, in welchem Block?</p></div>
+        <div class="t"><span class="badge l" data-i18n="tools.server">im Server</span><h3>hash_text</h3><p data-i18n="tools.hash">SHA-256 eines kurzen Textes, berechnet im Server ohne Speicherung. Dateien und Vertrauliches besser lokal hashen.</p></div>
+        <div class="t"><span class="badge" data-i18n="tools.read">liest</span><h3>get_anchoring_quota</h3><p data-i18n="tools.quota">Wie viele Nachweise sind heute noch frei?</p></div>
+        <div class="t"><span class="badge" data-i18n="tools.read">liest</span><h3>lookup_name</h3><p data-i18n="tools.lookup">Wert, Inhaber und Ablauf eines Namens wie <code>d/…</code> oder <code>id/…</code>.</p></div>
+        <div class="t"><span class="badge" data-i18n="tools.read">liest</span><h3>check_name_expiry</h3><p data-i18n="tools.expiry">Bis zu 25 Namen auf einmal: aktiv, läuft bald ab, abgelaufen oder frei, mit Datum.</p></div>
+        <div class="t"><span class="badge" data-i18n="tools.read">liest</span><h3>get_name_history</h3><p data-i18n="tools.history">Jede Registrierung und Änderung eines Namens, neueste zuerst.</p></div>
+        <div class="t"><span class="badge" data-i18n="tools.read">liest</span><h3>search_names</h3><p data-i18n="tools.search">Namen nach Präfix auflisten, zum Beispiel alle <code>poe/</code>-Nachweise.</p></div>
+        <div class="t"><span class="badge" data-i18n="tools.read">liest</span><h3>get_chain_status</h3><p data-i18n="tools.status">Blockhöhe, Synchronität, letzter Block, Fork-Prüfung, Blockabstand.</p></div>
+        <div class="t"><span class="badge" data-i18n="tools.read">liest</span><h3>get_block</h3><p data-i18n="tools.block">Block nach Höhe oder Hash mit Zeit und Transaktionen.</p></div>
+        <div class="t"><span class="badge" data-i18n="tools.read">liest</span><h3>get_transaction</h3><p data-i18n="tools.tx">Transaktion mit Ausgaben, Adressen und Namensoperationen.</p></div>
+        <div class="t"><span class="badge" data-i18n="tools.read">liest</span><h3>get_address</h3><p data-i18n="tools.address">Guthaben einer Adresse, auf Wunsch mit den letzten Transaktionen.</p></div>
+        <div class="t"><span class="badge" data-i18n="tools.read">liest</span><h3>verify_message</h3><p data-i18n="tools.verify">Prüfen, ob eine Nachricht wirklich vom Inhaber einer Adresse signiert wurde.</p></div>
+      </div>
+    </section>
+
+    <section id="trust">
+      <h2 data-i18n="trust.title">Sicherheit und Datenschutz</h2>
+      <p class="sub" data-i18n="trust.sub">Gebaut für den öffentlichen Betrieb mit beliebigen Agenten.</p>
+      <div class="cards">
+        <div class="card"><div class="ic">#</div><h3 data-i18n="trust.c1t">Nur Hashes, keine Dateien</h3><p data-i18n="trust.c1">Der Server nimmt keine Dateien an. Aus einem SHA-256 lässt sich der Inhalt nicht zurückrechnen. Nur <code>hash_text</code> bekommt einen kurzen Text zu sehen und vergisst ihn sofort wieder.</p></div>
+        <div class="card"><div class="ic">⏱</div><h3 data-i18n="trust.c2t">Frei, mit Kontingent</h3><p data-i18n="trust.c2">Verankern ist kostenlos: 10 Nachweise am Tag je Internetanschluss, für alle zusammen höchstens 200 am Tag. Mehr mit eigenem Schlüssel.</p></div>
+        <div class="card"><div class="ic">⛔</div><h3 data-i18n="trust.c3t">Keine Wallet-Funktionen</h3><p data-i18n="trust.c3">Der MCP-Server kann keine Coins senden und kennt weder private Schlüssel noch das Wallet. Er läuft als eigener Dienst getrennt von der Node.</p></div>
+        <div class="card"><div class="ic">⚠</div><h3 data-i18n="trust.c4t">Schutz vor Prompt-Injection</h3><p data-i18n="trust.c4">Namen und Werte, die Fremde in die Kette geschrieben haben, sind als <code>_untrusted</code> gekennzeichnet. Der Agent behandelt sie als Daten, nie als Anweisung.</p></div>
+        <div class="card"><div class="ic">⎔</div><h3 data-i18n="trust.c5t">Eigene Node</h3><p data-i18n="trust.c5">Dahinter läuft eine vollständige Doichain-Core-Node v31.1.6 mit Fork-Prüfung, betrieben von DOI Labs.</p></div>
+        <div class="card"><div class="ic">◌</div><h3 data-i18n="trust.c6t">Keine Cookies, kein Tracking</h3><p data-i18n="trust.c6">Diese Seite lädt nichts von Dritten und setzt keine Cookies. IP-Adressen stehen wie bei jedem Webserver in den Zugriffsprotokollen und zählen für das Tageskontingent. Inhalte werden nicht gespeichert.</p></div>
+      </div>
+    </section>
+
+    <section id="faq">
+      <h2 data-i18n="faq.title">Häufige Fragen</h2>
+      <div class="faq">
+        <details><summary data-i18n="faq.q1">Was ist MCP?</summary><p data-i18n="faq.a1">Das Model Context Protocol ist ein offener Standard, über den KI-Anwendungen Werkzeuge und Daten anbinden. Einmal eingetragen, kann Ihr Agent die Doichain-Werkzeuge selbstständig nutzen.</p></details>
+        <details><summary data-i18n="faq.q2">Was kostet das?</summary><p data-i18n="faq.a2">Für Nutzer nichts. Jede Verankerung kostet eine kleine Gebühr in DOI, die DOI Labs trägt. Deshalb gibt es ein Tageskontingent je Anschluss.</p></details>
+        <details><summary data-i18n="faq.q3">Wie lange gilt ein Nachweis?</summary><p data-i18n="faq.a3">Dauerhaft. Der Name <code>poe/&lt;hash&gt;</code> ist rund 36.000 Blöcke aktiv (etwa sieben Monate), die Transaktion mit Zeitstempel bleibt aber für immer in der Blockchain. <code>check_proof</code> meldet danach <code>expired</code> und nennt weiter den ersten Zeitpunkt, auch wenn jemand denselben Hash später erneut verankert.</p></details>
+        <details><summary data-i18n="faq.q4">Brauche ich DOI oder eine Wallet?</summary><p data-i18n="faq.a4">Nein. Der Server verankert über die Node von DOI Labs. Wer Namen selbst besitzen möchte, nutzt die REST-API mit eigenem Schlüssel oder eine eigene Wallet.</p></details>
+        <details><summary data-i18n="faq.q5">Was sieht die Öffentlichkeit?</summary><p data-i18n="faq.a5">Den Hash, den Zeitpunkt und eine optionale Notiz oder einen Dateinamen, wenn Sie das ausdrücklich möchten. Keine Inhalte, keine Personendaten.</p></details>
+        <details><summary data-i18n="faq.q7">Warum ist das Kontingent in Claude im Browser oder in ChatGPT schnell erschöpft?</summary><p data-i18n="faq.a7">Diese Apps verbinden sich aus den Rechenzentren ihrer Anbieter. Alle ihre Nutzer teilen sich deshalb das Kontingent dieser Adressen. Lesen und Prüfen sind unbegrenzt. Wer regelmäßig verankert, nutzt Claude Code, Cursor oder VS Code (Verbindung vom eigenen Rechner) oder einen eigenen Schlüssel.</p></details>
+        <details><summary data-i18n="faq.q6">Gibt es das auch ohne KI?</summary><p data-i18n="faq.a6">Ja. <a href="https://verifile.it/">Verifile</a> ist die Web-App zum Ziehen und Ablegen, die <a href="/">Doichain REST-API</a> die Schnittstelle für eigene Programme.</p></details>
+      </div>
+    </section>
+
+    <section id="links">
+      <div class="links">
+        <a class="link" href="/"><strong>Doichain REST-API</strong><small data-i18n="links.api">Die Schnittstelle hinter diesem Server, mit Spielwiese</small></a>
+        <a class="link" href="/docs"><strong>Swagger UI</strong><small data-i18n="links.docs">Alle Endpunkte der REST-API zum Ausprobieren</small></a>
+        <a class="link" href="https://verifile.it/"><strong>Verifile</strong><small data-i18n="links.verifile">Nachweise per Drag-and-drop im Browser</small></a>
+        <a class="link" href="https://modelcontextprotocol.io" target="_blank" rel="noopener"><strong>modelcontextprotocol.io</strong><small data-i18n="links.mcp">Spezifikation und Clients des Protokolls</small></a>
+        <a class="link" href="https://github.com/neubuot/doichain-mcp" target="_blank" rel="noopener"><strong>GitHub: neubuot/doichain-mcp</strong><small data-i18n="links.github">Quellcode, Werkzeugreferenz und Anleitung zum Selbstbetrieb (MIT-Lizenz)</small></a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p><a href="https://www.doichain.org/en/" target="_blank" rel="noopener">DOI Labs</a> · <a href="/">REST-API</a> · <a href="https://verifile.it/">Verifile</a> · <a href="https://doi-explorer.le-space.de" target="_blank" rel="noopener">Explorer</a> · <a href="https://github.com/neubuot/doichain-mcp" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.doichain.org/en/imprint/" target="_blank" rel="noopener" data-i18n="foot.imprint">Impressum</a></p>
+    <p data-i18n="foot.by">Ein Dienst der DOI Labs auf Basis der Doichain. Keine Cookies, kein Tracking.</p>
+  </footer>
+</body>
+</html>
