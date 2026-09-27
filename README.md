@@ -5,8 +5,8 @@
 <h1 align="center">Doichain MCP Server</h1>
 
 <p align="center">
-  <strong>Turn your AI agent into a blockchain notary.</strong><br>
-  Anchor documents tamper-proof on the Doichain, verify proofs of existence and read names, blocks and addresses.<br>
+  <strong>Tamper-evident timestamps for your AI agent.</strong><br>
+  Prove that a document already existed at a given time: anchor its hash on the Doichain (proof of existence), verify proofs and read names, blocks and addresses.<br>
   One URL, no account, no API key, no installation.
 </p>
 
@@ -104,14 +104,14 @@ Try it without an AI client using the [MCP Inspector](https://github.com/modelco
 
 | Tool | What it does | Access |
 |---|---|---|
-| `anchor_proof` | Anchor the SHA-256 of a document as proof that it exists now (name `poe/<sha256>`). Already anchored hashes return the existing proof. | writes |
-| `check_proof` | Is this hash anchored, since when, in which block? Reports the first anchoring even if an expired proof was anchored again. | reads |
+| `anchor_proof` | Anchor the SHA-256 of a document as a tamper-evident timestamp (proof of existence, name `poe/<sha256>`). Already anchored hashes return the existing proof. An expired hash is only registered again with `reanchor_expired: true`. | writes |
+| `check_proof` | Is this hash anchored, since when, in which block? Always reports the first anchoring and shows a later registration of the name separately. | reads |
 | `hash_text` | SHA-256 of a short text (up to 40,000 characters), computed on the server, nothing stored. | server-side |
 | `get_anchoring_quota` | Proofs still available today for the caller's IP address. | reads |
 | `lookup_name` | Current value, owner and expiry of a name such as `d/example` or `id/alice`. | reads |
 | `get_name_history` | Every registration and update of a name, newest first. | reads |
 | `check_name_expiry` | Up to 25 names at once: active, expiring soon, expired or free, with dates. | reads |
-| `search_names` | Names by prefix (for example all `poe/` proofs), with paging. | reads |
+| `search_names` | Names by prefix (for example all `poe/` proofs), with paging. Expired names with `include_expired`. | reads |
 | `get_chain_status` | Block height, sync state, last block, fork check, average block interval. | reads |
 | `get_block` | A block by height or hash. | reads |
 | `get_transaction` | A transaction with outputs, addresses and name operations. | reads |
@@ -141,7 +141,13 @@ sequenceDiagram
     M-->>A: confirmed, block 433,335, 2026-09-25 23:21 UTC
 ```
 
-Only the hash, and optionally a public note or file name, goes on chain. A SHA-256 cannot be turned back into the document. Anyone can verify a proof later with `check_proof` or on [verifile.it](https://verifile.it/), and changing a single byte of the document produces a different hash. The name `poe/<sha256>` stays active for 36,000 blocks (roughly seven months), the anchoring transaction and its timestamp stay in the blockchain for good.
+Only the hash, and optionally a public note or file name, goes on chain. A SHA-256 cannot be turned back into the document. Anyone can verify a proof later with `check_proof` or on [verifile.it](https://verifile.it/), and changing a single byte of the document produces a different hash.
+
+What a proof shows, and for how long:
+
+- **The timestamp is permanent.** The anchoring transaction and its block time stay in the blockchain history for good.
+- **The name is not.** `poe/<sha256>` stays active for 36,000 blocks (about 250 days at ten minutes per block). After that anyone can register it again, with their own note and address. `check_proof` keeps reporting the first anchoring as the proof time and shows a later registration separately in `latest_registration`. `anchor_proof` does not register an expired hash again unless you ask for it with `reanchor_expired`, and `search_names` lists expired proofs with `include_expired`.
+- **Existence, not authorship.** A proof shows that a document with this hash existed no later than the block time. It does not show who submitted it. The hosted endpoint registers the names from the operator's wallet, which pays for them and holds them.
 
 Agents need access to the file to hash it (Claude Code, Cursor, VS Code). In a plain chat, [Verifile](https://verifile.it/) is the easiest way: drop the file, it is hashed in the browser and anchored with one click.
 
@@ -159,7 +165,7 @@ Hosted chat apps (Claude on the web, ChatGPT) connect from their providers' data
 ## Security and privacy
 
 - **Hashes only.** The server accepts no files. `hash_text` sees a short text and forgets it immediately.
-- **No wallet functions.** The server cannot send coins, change names or call node RPCs. It runs as a separate service under its own system user, without read access to the API's key file, and may only open local connections.
+- **No wallet functions.** The server cannot send coins, change names or call node RPCs. Its only write operation is `anchor_proof`, for which the REST API registers the name from the operator's wallet. It runs as a separate service under its own system user, without read access to the API's key file, and may only open local connections.
 - **Prompt injection protection.** Names and values written to the chain by strangers are returned in fields ending in `_untrusted` together with a notice, and the server instructions tell agents to treat them as data only.
 - **DNS rebinding protection.** Host and Origin headers are validated.
 - **No tracking.** No cookies, no third-party resources on the landing page. Like any web server, IP addresses appear in access logs and count toward the daily quota. Content is not stored.

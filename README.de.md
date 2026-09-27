@@ -5,8 +5,8 @@
 <h1 align="center">Doichain MCP-Server</h1>
 
 <p align="center">
-  <strong>Ihr KI-Agent als Blockchain-Notar.</strong><br>
-  Dokumente fälschungssicher in der Doichain verankern, Nachweise prüfen, Namen, Blöcke und Adressen lesen.<br>
+  <strong>Zeitstempel und Existenznachweise für Ihren KI-Agenten.</strong><br>
+  Belegen Sie, dass ein Dokument zu einem bestimmten Zeitpunkt schon existierte: den Hash mit Zeitstempel in der Doichain verankern, Nachweise prüfen, Namen, Blöcke und Adressen lesen.<br>
   Eine Adresse genügt, ohne Konto, ohne Schlüssel, ohne Installation.
 </p>
 
@@ -38,13 +38,19 @@ Im Browser zeigt dieselbe Adresse die [Landingpage](https://doi-api.sendlabs.de/
 
 | Werkzeug | Zweck |
 |---|---|
-| `anchor_proof` | Hash eines Dokuments verankern (einziges schreibendes Werkzeug). Ist er schon verankert, kommt der bestehende Nachweis zurück |
-| `check_proof` | Ist der Hash verankert, seit wann, in welchem Block. Nennt immer die erste Verankerung |
+| `anchor_proof` | Hash eines Dokuments als Zeitstempel verankern (einziges schreibendes Werkzeug). Ist er schon verankert, kommt der bestehende Nachweis zurück. Einen abgelaufenen Hash registriert das Werkzeug nur mit `reanchor_expired` erneut |
+| `check_proof` | Ist der Hash verankert, seit wann, in welchem Block. Nennt immer die erste Verankerung und zeigt eine spätere Registrierung des Namens getrennt an |
 | `hash_text` | SHA-256 eines kurzen Textes, im Server berechnet, nichts wird gespeichert |
 | `get_anchoring_quota` | verbleibende Nachweise des Tages |
-| `lookup_name`, `get_name_history`, `search_names` | Namen lesen, Historie, Suche nach Präfix |
+| `lookup_name`, `get_name_history`, `search_names` | Namen lesen, Historie, Suche nach Präfix (abgelaufene Namen mit `include_expired`) |
 | `check_name_expiry` | bis zu 25 Namen auf einmal: aktiv, läuft bald ab, abgelaufen oder frei, mit Datum |
 | `get_chain_status`, `get_block`, `get_transaction`, `get_address`, `verify_message` | Zustand der Kette, Blöcke, Transaktionen, Guthaben, signierte Nachrichten |
+
+## Was ein Nachweis belegt
+
+- Der Zeitstempel bleibt dauerhaft in der Blockchain, die Verankerungstransaktion und ihre Blockzeit gehen nicht verloren.
+- Der Name `poe/<sha256>` läuft nach 36.000 Blöcken (rund 250 Tage bei zehn Minuten je Block) ab und kann danach von jedem neu registriert werden. `check_proof` nennt weiterhin die erste Verankerung als Nachweiszeitpunkt und zeigt eine spätere Registrierung getrennt an. `anchor_proof` registriert einen abgelaufenen Hash nur auf ausdrücklichen Wunsch (`reanchor_expired`) erneut.
+- Ein Nachweis belegt, dass ein Dokument mit diesem Hash spätestens zur Blockzeit existierte. Wer ihn eingereicht hat, belegt er nicht. Die Namen registriert der Betreiber des Endpunkts aus seinem Wallet, er bezahlt und hält sie.
 
 ## Kontingent und Grenzen
 
@@ -55,7 +61,7 @@ Im Browser zeigt dieselbe Adresse die [Landingpage](https://doi-api.sendlabs.de/
 ## Sicherheit und Datenschutz
 
 - Der Server nimmt keine Dateien an, auf die Kette kommt nur der Hash (und auf Wunsch eine öffentliche Notiz).
-- Keine Wallet-Funktionen: Der Server kann keine Coins senden und keine Namen ändern. Er läuft getrennt von der Node unter eigenem Systembenutzer.
+- Keine Wallet-Funktionen: Der Server kann keine Coins senden und keine Namen ändern. Sein einziger Schreibzugriff ist `anchor_proof`, dafür registriert die REST-API den Namen aus dem Wallet des Betreibers. Er läuft getrennt von der Node unter eigenem Systembenutzer.
 - Namen und Werte, die Fremde in die Kette geschrieben haben, sind als `_untrusted` gekennzeichnet (Schutz gegen Prompt-Injection).
 - Keine Cookies, kein Tracking, keine Inhalte von Dritten.
 

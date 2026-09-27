@@ -40,6 +40,7 @@ Copy `deploy/doichain-mcp.env.example` to `/etc/doichain-mcp/doichain-mcp.env` (
 | `DOI_MCP_PUBLIC_URL` | `https://doi-api.sendlabs.de` | public base URL of this instance (icon and website link in `serverInfo`) |
 | `DOI_MCP_VERIFILE_URL` | `https://verifile.it` | verification page linked in results |
 | `DOI_MCP_POE_KEY` | empty | API key with the `poe` tier used for public anchoring. Empty disables anchoring for callers without their own key |
+| `DOI_MCP_ACCEPT_BEARER` | `false` | `true` (or `1`, `yes`) also accepts a caller's own Doichain key as `Authorization: Bearer <key>`, in addition to `X-API-Key`. Off by default, because clients and gateways often send their own tokens in this header, which would otherwise be passed on to the REST API. If the REST API rejects a bearer token, the call is retried with the public key and an info message is logged (never the token) |
 | `DOI_MCP_ALLOWED_HOSTS` | `doi-api.sendlabs.de,api.doi.zone,127.0.0.1:*,localhost:*` | accepted `Host` headers, add your hostname |
 | `DOI_MCP_ALLOWED_ORIGINS` | our hostnames, `claude.ai`, `chatgpt.com`, localhost | accepted `Origin` headers (requests without `Origin` are always accepted) |
 | `DOI_MCP_HOST`, `DOI_MCP_PORT`, `DOI_MCP_WORKERS` | `127.0.0.1`, `8081`, `1` | only for `python -m doichain_mcp` |

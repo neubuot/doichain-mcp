@@ -16,21 +16,25 @@ Annotations: every tool is `readOnlyHint: true` except `anchor_proof`. `hash_tex
 
 ### `anchor_proof`
 
-Anchor a SHA-256 hash on the Doichain as proof that the document exists now. The server registers the name `poe/<sha256>` with a small JSON value. Confirms with the next block, usually within 10 minutes.
+Anchor a SHA-256 hash on the Doichain as a tamper-evident timestamp (proof of existence). The server registers the name `poe/<sha256>` with a small JSON value from the operator's wallet. Confirms with the next block, usually within 10 minutes. The proof shows that a document with this hash existed no later than the block time, not who submitted it.
 
 | Parameter | Type | Required | Description |
 |---|---|---|---|
 | `sha256` | string | yes | SHA-256 of the document, 64 hex characters (`sha256:` or `0x` prefix, upper case and surrounding whitespace are accepted). Compute it from the file, never guess it |
 | `note` | string | no | Public note, at most 160 characters, stored on chain forever. No personal data, no secrets |
 | `filename` | string | no | Public file name, at most 80 characters, stored forever. Only when the user explicitly wants it public |
+| `reanchor_expired` | boolean | no, default false | Only when an earlier proof of this hash has expired and the user explicitly wants an additional, later registration. The original anchoring stays the proof time. The new registration adds a later timestamp and replaces the public note and holder of the name |
 
-Returns `status` (`pending`), `txid`, `explorer_url`, `verify_url` (Verifile page for the hash), `public_record` (the JSON written to the chain), `quota` and `next_step`. If the hash is already anchored or pending, the result of `check_proof` is returned with `already_anchored: true`.
+Returns `status` (`pending`), `txid`, `reanchored_expired_proof` (true if an expired proof was registered again with `reanchor_expired`, then also a `note`), `explorer_url`, `verify_url` (Verifile page for the hash), `public_record` (the JSON written to the chain), `quota` and `next_step`.
+
+If the hash is already anchored or pending, the result of `check_proof` is returned with `already_anchored: true`. If an earlier proof has expired and `reanchor_expired` is not set, nothing is registered: the result of `check_proof` comes back with `already_anchored: true`, `expired: true` and a `hint` that explains the option. The expired proof stays valid for its block time.
 
 ```json
 {
   "sha256": "0b96336cb5cc6ec0f96ac837e097349740699e0ab7e68df70205c1a825c80ccf",
   "status": "pending",
   "txid": "a7af185169390f866e6a24db58a0c5a094120354b886f27077228504f9d54b33",
+  "reanchored_expired_proof": false,
   "explorer_url": "https://doi-explorer.le-space.de/tx/a7af185169390f866e6a24db58a0c5a094120354b886f27077228504f9d54b33",
   "verify_url": "https://verifile.it/#0b96336cb5cc6ec0f96ac837e097349740699e0ab7e68df70205c1a825c80ccf",
   "public_record": {"v": 1, "alg": "sha256", "hash": "0b96336c…", "ts": "2026-09-26T10:09:12Z", "note": "Doichain MCP-Server live"},
@@ -52,11 +56,15 @@ Returns `status`:
 | Status | Meaning |
 |---|---|
 | `confirmed` | Anchored. A document with exactly this hash existed no later than `block_time_utc` |
-| `pending` | Waiting for the first confirmation |
-| `expired` | The name expired, but the anchoring transaction stays in the chain, the proof for `block_time_utc` remains valid |
+| `pending` | Waiting for the first confirmation. If block data is present, the name had expired and a new registration is waiting. The earlier anchoring stays valid (`anchored: true`) |
+| `expired` | The name expired and can be registered again by anyone. The anchoring transaction stays in the chain, so it still shows that the document existed no later than `block_time_utc` |
 | `unknown` | Never anchored under the `poe/<sha256>` convention |
 
-Further fields: `anchored`, `meaning`, `block_height`, `block_time_utc`, `confirmations`, `txid`, `explorer_url`, `owner_address`, `expires_in_blocks`, `record_untrusted`, `verify_url`. Block data always refers to the **first** anchoring. If an expired proof was anchored again later, `latest_registration` shows the newer registration.
+A proof shows that a document with this hash existed no later than the block time. It does not show who submitted it.
+
+The top level describes the **first** anchoring only, which is the proof time: `anchored`, `meaning`, `block_height`, `block_time_utc`, `confirmations`, `txid`, `explorer_url`, `record_untrusted` (the record written with the first anchoring), `first_owner_address`, `verify_url`. As long as the name has a single registration, `owner_address` and `expires_in_blocks` are at the top level too.
+
+If the name was updated later or registered again after it expired, the top level stays unchanged and `latest_registration` describes the current registration: `kind`, `block_height`, `block_time_utc`, `txid`, `explorer_url`, `owner_address`, `expires_in_blocks`, `record_untrusted` and a `note`. `kind` is `update by the holder` (updated or renewed from the holding wallet before expiry) or `re-registration after expiry` (then also `registration_started`, the operation that started the new registration). Holder and record of a re-registration are not part of the original proof and may come from someone else. With an older REST API that does not report the kind, `kind` is `unknown`.
 
 ```json
 {
@@ -68,9 +76,34 @@ Further fields: `anchored`, `meaning`, `block_height`, `block_time_utc`, `confir
   "block_time_utc": "2026-09-25T23:21:55Z",
   "confirmations": 107,
   "txid": "507a08d8df8477e5ddfecb72cc7212f9f55fbec6b94eee42ad06b9ab3889fc6e",
+  "first_owner_address": "N…",
+  "owner_address": "N…",
   "expires_in_blocks": 35903,
   "record_untrusted": {"v": 1, "alg": "sha256", "hash": "f712d10e…", "ts": "2026-09-25T22:38:51Z", "file": "README.md", "note": "Erster Nachweis der Doichain-API, 26.09.2026"},
   "verify_url": "https://verifile.it/#f712d10e8eb76851bc4d5c4ffd8e76430c2257b167548f2f65ca5fdf9e8de1c8"
+}
+```
+
+Shape after the name expired and was registered again (abridged): the top level still describes the first anchoring, the new registration only appears in `latest_registration`.
+
+```json
+{
+  "status": "confirmed",
+  "block_height": 433335,
+  "block_time_utc": "2026-09-25T23:21:55Z",
+  "txid": "507a08d8…",
+  "first_owner_address": "N…",
+  "record_untrusted": {"v": 1, "alg": "sha256", "hash": "f712d10e…", "note": "Erster Nachweis der Doichain-API, 26.09.2026"},
+  "latest_registration": {
+    "kind": "re-registration after expiry",
+    "block_height": 470500,
+    "txid": "9c1e…",
+    "owner_address": "N…",
+    "expires_in_blocks": 35990,
+    "record_untrusted": {"v": 1, "alg": "sha256", "hash": "f712d10e…", "note": "…"},
+    "registration_started": {"block_height": 470500, "txid": "9c1e…"},
+    "note": "The name poe/<sha256> expired and was registered again later. …"
+  }
 }
 ```
 
@@ -142,8 +175,9 @@ Returns `summary` (count per status), `names` (one entry per name with `status` 
 | `prefix` | string | yes | Name prefix, for example `poe/`, `d/`, `id/` |
 | `limit` | integer 1 to 100 | no, default 20 | Maximum number of names |
 | `after` | string | no | Paging cursor, pass `next_after` from the previous result unchanged |
+| `include_expired` | boolean | no, default false | Also list expired names, for example proofs whose `poe/` name has expired |
 
-Lists active names in the node's order (shorter names first, then byte order). Returns `names` with `name_untrusted`, `value_untrusted` (clipped to 300 characters), `owner_address`, `last_update_height` and expiry fields, plus `next_after` and `exhausted`.
+Lists active names in the node's order (shorter names first, then byte order). With `include_expired` it also lists expired ones. Returns `names` with `name_untrusted`, `value_untrusted` (clipped to 300 characters), `owner_address`, `last_update_height`, `status` (`active` or `expired`) and expiry fields, plus `include_expired`, `next_after` and `exhausted`.
 
 ---
 
@@ -177,7 +211,7 @@ Returns `confirmations`, `block_hash`, `block_time_utc`, `vsize`, `input_count`,
 | `include_history` | boolean | no, default false | Also return recent transactions |
 | `history_limit` | integer 1 to 50 | no, default 10 | Number of recent transactions |
 
-Returns `type`, `balance_doi`, `unconfirmed_doi`, `explorer_url` and optionally `transaction_count` and `recent_transactions`. Name outputs (0.01 DOI deposit per name) count toward the balance but can only be spent together with the name.
+Returns `type`, `balance_doi`, `unconfirmed_doi`, `explorer_url` and optionally `transaction_count` and `recent_transactions`. Each name output holds 0.01 DOI, which counts toward the balance but can only be spent together with the name. The amount is lost when the name expires. It is not a refundable deposit.
 
 ### `verify_message`
 

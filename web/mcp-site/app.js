@@ -5,8 +5,8 @@
   var EN = {
     "nav.demo": "Examples", "nav.connect": "Connect", "nav.tools": "Tools", "nav.trust": "Security",
     "hero.eyebrow": "Model Context Protocol · Doichain",
-    "hero.title": 'Turn your AI agent into a <span class="g">blockchain notary</span>.',
-    "hero.lead": "One link is all it takes: Claude, ChatGPT, Cursor or any other MCP-capable agent anchors documents tamper-proof on the Doichain, checks proofs and reads names and blocks. No account, no key, no installation.",
+    "hero.title": 'Your AI agent proves <span class="g">a document already existed</span>.',
+    "hero.lead": "One link is all it takes: Claude, ChatGPT, Cursor or any other MCP-capable agent anchors a document's fingerprint on the Doichain with a timestamp that cannot be changed afterwards. It also checks proofs and reads names and blocks. No account, no key, no installation.",
     "hero.endpoint": "MCP address", "hero.cta1": "Connect in 30 seconds", "hero.cta2": "See the 13 tools",
     "copy": "Copy", "copied": "Copied",
     "status.loading": "Querying the Doichain …",
@@ -21,8 +21,8 @@
     "demo.a4": "Synced at block 433,427, last block 7 minutes ago, 9 minutes average block interval, fork check fine, 15 connections.",
     "how.title": "How a proof comes about", "how.sub": "The document never leaves your computer. Only its digital fingerprint goes on chain.",
     "how.s1t": "Compute the fingerprint", "how.s1": 'The agent computes the file\'s SHA-256 on your computer, for example with <code>sha256sum</code>. It needs access to the file for that, as in Claude Code, Cursor or VS Code. In a plain chat, <a href="https://verifile.it/">verifile.it</a> is the easiest way.',
-    "how.s2t": "Anchor it on the Doichain", "how.s2": "<code>anchor_proof</code> writes the name <code>poe/&lt;hash&gt;</code> to the blockchain. With the next block the point in time is fixed tamper-proof.",
-    "how.s3t": "Verify any time", "how.s3": 'Later anyone can show with <code>check_proof</code> or on <a href="https://verifile.it/">verifile.it</a> that exactly this document existed at that time.',
+    "how.s2t": "Anchor it on the Doichain", "how.s2": "<code>anchor_proof</code> writes the name <code>poe/&lt;hash&gt;</code> to the blockchain. With the next block the point in time is recorded and cannot be changed afterwards.",
+    "how.s3t": "Verify any time", "how.s3": 'Later anyone can show with <code>check_proof</code> or on <a href="https://verifile.it/">verifile.it</a> that exactly this document existed no later than that time.',
     "connect.title": "Connected in 30 seconds", "connect.sub": "Transport Streamable HTTP, no sign-in needed. Add the address and you are done.",
     "connect.other": "Other",
     "connect.cc": "Run once in your terminal, then the server is available in all your projects:",
@@ -45,14 +45,14 @@
     "connect.k5": "Browser", "connect.k5b": "Clients running directly in a web browser are not supported (no CORS)",
     "tools.title": "13 tools for your agent", "tools.sub": "Reading is free. Only anchoring writes to the chain, free of charge within a daily quota.",
     "tools.write": "writes", "tools.read": "reads", "tools.server": "server-side",
-    "tools.anchor": "Anchor the hash of a document as proof. Already anchored hashes are detected.",
-    "tools.check": "Is this hash anchored, since when, in which block?",
+    "tools.anchor": "Anchor the hash of a document as proof. Already anchored hashes are detected. An expired hash is only anchored again with <code>reanchor_expired</code>. That adds a later timestamp. The first one still counts.",
+    "tools.check": "Is this hash anchored, since when, in which block? Always reports the first anchoring and lists a later registration separately.",
     "tools.hash": "SHA-256 of a short text, computed on the server without storing it. Hash files and confidential texts locally.",
     "tools.quota": "How many proofs are still free today?",
     "tools.lookup": "Value, owner and expiry of a name like <code>d/…</code> or <code>id/…</code>.",
     "tools.expiry": "Up to 25 names at once: active, expiring soon, expired or free, with a date.",
     "tools.history": "Every registration and change of a name, newest first.",
-    "tools.search": "List names by prefix, for example all <code>poe/</code> proofs.",
+    "tools.search": "List names by prefix, for example all <code>poe/</code> proofs. With <code>include_expired</code> expired ones too.",
     "tools.status": "Block height, sync state, last block, fork check, block interval.",
     "tools.block": "A block by height or hash with time and transactions.",
     "tools.tx": "A transaction with outputs, addresses and name operations.",
@@ -61,15 +61,16 @@
     "trust.title": "Security and privacy", "trust.sub": "Built for public operation with any agent.",
     "trust.c1t": "Hashes only, no files", "trust.c1": "The server accepts no files. A SHA-256 cannot be turned back into the content. Only <code>hash_text</code> sees a short text and forgets it right away.",
     "trust.c2t": "Free, with a quota", "trust.c2": "Anchoring is free: 10 proofs per day per internet connection, at most 200 per day for all users together. More with your own key.",
-    "trust.c3t": "No wallet functions", "trust.c3": "The MCP server cannot send coins and knows neither private keys nor the wallet. It runs as a separate service, apart from the node.",
+    "trust.c3t": "No wallet functions", "trust.c3": "The MCP server cannot send coins and knows neither private keys nor the wallet. It runs as a separate service, apart from the node. DOI Labs pays for anchorings from its own wallet.",
     "trust.c4t": "Prompt injection protection", "trust.c4": "Names and values that strangers wrote to the chain are marked <code>_untrusted</code>. The agent treats them as data, never as instructions.",
     "trust.c5t": "Own node", "trust.c5": "Behind it runs a full Doichain Core node v31.1.6 with fork check, operated by DOI Labs.",
     "trust.c6t": "No cookies, no tracking", "trust.c6": "This page loads nothing from third parties and sets no cookies. Like on any web server, IP addresses appear in the access logs and count toward the daily quota. Content is not stored.",
     "faq.title": "Frequently asked questions",
     "faq.q1": "What is MCP?", "faq.a1": "The Model Context Protocol is an open standard that lets AI applications connect tools and data. Once added, your agent can use the Doichain tools on its own.",
-    "faq.q2": "What does it cost?", "faq.a2": "Nothing for users. Each anchoring costs a small fee in DOI that DOI Labs covers. That is why there is a daily quota per connection.",
-    "faq.q3": "How long is a proof valid?", "faq.a3": "Forever. The name <code>poe/&lt;hash&gt;</code> stays active for about 36,000 blocks (roughly seven months), but the transaction with its timestamp remains in the blockchain for good. <code>check_proof</code> then reports <code>expired</code> and keeps naming the first point in time, even if someone anchors the same hash again later.",
+    "faq.q2": "What does it cost?", "faq.a2": "Nothing for users. Each anchoring costs a small fee plus 0.01 DOI for the name. The 0.01 DOI is not a refundable deposit and is lost when the name expires. DOI Labs pays both from its own wallet, which is why there is a daily quota per connection.",
+    "faq.q3": "How long is a proof valid?", "faq.a3": "The timestamp stays in the chain history permanently. The name <code>poe/&lt;hash&gt;</code>, however, is only active for 36,000 blocks (about 250 days at ten minutes per block). Afterwards it is free and could be registered again, even by someone else. <code>check_proof</code> always reports the first anchoring as the proof time and shows a later registration separately.",
     "faq.q4": "Do I need DOI or a wallet?", "faq.a4": "No. The server anchors through the DOI Labs node. If you want to own names yourself, use the REST API with your own key or your own wallet.",
+    "faq.q8": "Who owns a proof?", "faq.a8": "The name <code>poe/&lt;hash&gt;</code> is held by the DOI Labs wallet, which also pays the fee and the 0.01 DOI for the name. The proof shows that a document with this hash existed no later than that time, not who submitted it.",
     "faq.q5": "What does the public see?", "faq.a5": "The hash, the point in time and an optional note or file name if you explicitly want that. No content, no personal data.",
     "faq.q7": "Why does the quota run out quickly in Claude on the web or in ChatGPT?", "faq.a7": "These apps connect from their providers' data centers, so all their users share the quota of those addresses. Reading and checking are unlimited. For regular anchoring use Claude Code, Cursor or VS Code (connection from your own computer) or your own key.",
     "faq.q6": "Is there a way without AI?", "faq.a6": 'Yes. <a href="https://verifile.it/">Verifile</a> is the drag-and-drop web app, the <a href="/">Doichain REST API</a> the interface for your own programs.',
@@ -79,7 +80,7 @@
     "foot.imprint": "Legal notice", "foot.by": "A DOI Labs service built on the Doichain. No cookies, no tracking."
   };
   var DE = { "copy": "Kopieren", "copied": "Kopiert" };
-  var TITLE = { de: "Doichain MCP: Ihr KI-Agent als Blockchain-Notar", en: "Doichain MCP: Turn your AI agent into a blockchain notary" };
+  var TITLE = { de: "Doichain MCP: Zeitstempel für Dokumente, direkt aus dem KI-Agenten", en: "Doichain MCP: document timestamps for your AI agent" };
 
   var lang = "de";
   var nodes = Array.prototype.slice.call(document.querySelectorAll("[data-i18n]"));

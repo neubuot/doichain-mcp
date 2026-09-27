@@ -4,14 +4,14 @@ build-backend = "hatchling.build"
 
 [project]
 name = "doichain-mcp"
-version = "1.4.1"
+version = "1.5.0"
 description = "MCP server for the Doichain blockchain: proof of existence, names and chain data for AI agents"
 readme = "README.md"
 license = "MIT"
 license-files = ["LICENSE"]
 requires-python = ">=3.11"
 authors = [{ name = "DOI Labs AG" }]
-keywords = ["mcp", "model-context-protocol", "mcp-server", "doichain", "blockchain", "proof-of-existence", "timestamping", "notary", "namecoin", "ai-agents"]
+keywords = ["mcp", "model-context-protocol", "mcp-server", "doichain", "blockchain", "proof-of-existence", "timestamping", "tamper-evident", "namecoin", "ai-agents"]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",

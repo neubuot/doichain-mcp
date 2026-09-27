@@ -3,7 +3,7 @@
   "name": "io.github.neubuot/doichain",
   "title": "Doichain",
   "description": "Proof of existence, names and chain data of the Doichain blockchain for AI agents",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "websiteUrl": "https://doi-api.sendlabs.de/mcp",
   "repository": {
     "url": "https://github.com/neubuot/doichain-mcp",

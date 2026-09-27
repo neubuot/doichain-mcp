@@ -3,6 +3,29 @@
 All notable changes to the Doichain MCP server. The format follows [Keep a Changelog](https://keepachangelog.com/),
 versions follow [Semantic Versioning](https://semver.org/).
 
+## [1.5.0] - 2026-09-27
+
+Fixes from an external review by @NiKrause (issues #3 and #4). Requires Doichain REST API 1.5.0 or later for the
+expired-hash protection: older APIs ignore the `reanchor` flag.
+
+### Changed
+- **Breaking:** `check_proof` no longer mixes two registrations. The top level describes only the first anchoring,
+  including its own record (`record_untrusted`) and, when known, `first_owner_address`. Holder, record and expiry of
+  a later registration are reported in `latest_registration` with a `kind` of `re-registration after expiry` or
+  `update by the holder`. `owner_address` and `expires_in_blocks` stay at the top level only for a single registration.
+- **Breaking:** `anchor_proof` returns `reanchored_expired_proof` instead of `renewed_expired_proof`.
+- An expired hash is no longer registered again silently. `anchor_proof` returns the existing proof with a hint,
+  and only registers again when `reanchor_expired=true` is passed.
+- `Authorization: Bearer` is interpreted as a Doichain API key only when `DOI_MCP_ACCEPT_BEARER=true` (default false).
+- Wording: no more "notary". The server describes what the chain shows, a tamper-evident timestamp proving that a
+  document existed no later than the block time, and explains expiry and who holds the anchored names.
+- The 0.01 DOI per name is described as a cost that is lost at expiry, not as a deposit.
+- Workflows pin all actions to commit SHAs.
+
+### Added
+- `search_names` accepts `include_expired` to list expired names as well, for example old proofs.
+- `api()` refuses to combine a response cache with keyed requests (cache entries are not separated per caller).
+
 ## [1.4.1] - 2026-09-26
 
 First public release and listing in the MCP Registry as `io.github.neubuot/doichain`.

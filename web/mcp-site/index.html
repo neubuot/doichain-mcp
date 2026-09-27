@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Doichain MCP: Ihr KI-Agent als Blockchain-Notar</title>
-  <meta name="description" content="MCP-Server für die Doichain: Claude, ChatGPT, Cursor und andere KI-Agenten verankern Dokumente fälschungssicher, prüfen Nachweise und lesen Namen und Blöcke. Ohne Konto, ohne Installation.">
+  <title>Doichain MCP: Zeitstempel für Dokumente, direkt aus dem KI-Agenten</title>
+  <meta name="description" content="MCP-Server für die Doichain: Claude, ChatGPT, Cursor und andere KI-Agenten verankern den Fingerabdruck von Dokumenten mit einem Zeitstempel, der sich nachträglich nicht ändern lässt, prüfen Nachweise und lesen Namen und Blöcke. Ohne Konto, ohne Installation.">
   <meta name="theme-color" content="#0b1020">
   <link rel="canonical" href="https://doi-api.sendlabs.de/mcp">
-  <meta property="og:title" content="Doichain MCP: Ihr KI-Agent als Blockchain-Notar">
-  <meta property="og:description" content="Ein Link, und Ihr KI-Agent verankert Dokumente fälschungssicher in der Doichain und prüft Nachweise.">
+  <meta property="og:title" content="Doichain MCP: Zeitstempel für Dokumente, direkt aus dem KI-Agenten">
+  <meta property="og:description" content="Ein Link, und Ihr KI-Agent belegt mit einem Zeitstempel in der Doichain, dass ein Dokument schon existierte, und prüft Nachweise.">
   <meta property="og:url" content="https://doi-api.sendlabs.de/mcp">
   <meta property="og:type" content="website">
   <link rel="icon" href="/mcp-site/icon.svg" type="image/svg+xml">
@@ -33,8 +33,8 @@
   <main>
     <section class="hero">
       <p class="eyebrow" data-i18n="hero.eyebrow">Model Context Protocol · Doichain</p>
-      <h1 data-i18n="hero.title">Ihr KI-Agent als <span class="g">Blockchain-Notar</span>.</h1>
-      <p class="lead" data-i18n="hero.lead">Ein Link genügt: Claude, ChatGPT, Cursor oder jeder andere MCP-fähige Agent verankert Dokumente fälschungssicher in der Doichain, prüft Nachweise und liest Namen und Blöcke. Ohne Konto, ohne Schlüssel, ohne Installation.</p>
+      <h1 data-i18n="hero.title">Ihr KI-Agent belegt, <span class="g">dass ein Dokument schon existierte</span>.</h1>
+      <p class="lead" data-i18n="hero.lead">Ein Link genügt: Claude, ChatGPT, Cursor oder jeder andere MCP-fähige Agent verankert den Fingerabdruck eines Dokuments in der Doichain, mit einem Zeitstempel, der sich nachträglich nicht ändern lässt. Außerdem prüft er Nachweise und liest Namen und Blöcke. Ohne Konto, ohne Schlüssel, ohne Installation.</p>
 
       <div class="endpoint" role="group" aria-label="MCP-Adresse">
         <span class="ep-label" data-i18n="hero.endpoint">MCP-Adresse</span>
@@ -81,8 +81,8 @@
       <p class="sub" data-i18n="how.sub">Das Dokument verlässt nie Ihren Rechner. Auf die Kette kommt nur sein digitaler Fingerabdruck.</p>
       <ol class="steps">
         <li><span class="num">1</span><h3 data-i18n="how.s1t">Fingerabdruck berechnen</h3><p data-i18n="how.s1">Der Agent berechnet den SHA-256 der Datei auf Ihrem Rechner, zum Beispiel mit <code>sha256sum</code>. Dafür braucht er Zugriff auf die Datei, etwa in Claude Code, Cursor oder VS Code. Im reinen Chat geht es am einfachsten mit <a href="https://verifile.it/">verifile.it</a>.</p></li>
-        <li><span class="num">2</span><h3 data-i18n="how.s2t">In der Doichain verankern</h3><p data-i18n="how.s2"><code>anchor_proof</code> schreibt den Namen <code>poe/&lt;hash&gt;</code> in die Blockchain. Mit dem nächsten Block ist der Zeitpunkt fälschungssicher festgehalten.</p></li>
-        <li><span class="num">3</span><h3 data-i18n="how.s3t">Jederzeit prüfen</h3><p data-i18n="how.s3">Jeder kann später mit <code>check_proof</code> oder auf <a href="https://verifile.it/">verifile.it</a> zeigen, dass genau dieses Dokument zu diesem Zeitpunkt existierte.</p></li>
+        <li><span class="num">2</span><h3 data-i18n="how.s2t">In der Doichain verankern</h3><p data-i18n="how.s2"><code>anchor_proof</code> schreibt den Namen <code>poe/&lt;hash&gt;</code> in die Blockchain. Mit dem nächsten Block ist der Zeitpunkt festgehalten und lässt sich nachträglich nicht mehr ändern.</p></li>
+        <li><span class="num">3</span><h3 data-i18n="how.s3t">Jederzeit prüfen</h3><p data-i18n="how.s3">Jeder kann später mit <code>check_proof</code> oder auf <a href="https://verifile.it/">verifile.it</a> zeigen, dass genau dieses Dokument spätestens zu diesem Zeitpunkt existierte.</p></li>
       </ol>
     </section>
 
@@ -161,14 +161,14 @@
       <h2 data-i18n="tools.title">13 Werkzeuge für Ihren Agenten</h2>
       <p class="sub" data-i18n="tools.sub">Lesen ist frei. Nur das Verankern schreibt auf die Kette, kostenlos im Rahmen eines Tageskontingents.</p>
       <div class="tools">
-        <div class="t write"><span class="badge w" data-i18n="tools.write">schreibt</span><h3>anchor_proof</h3><p data-i18n="tools.anchor">Hash eines Dokuments als Nachweis verankern. Bereits verankerte Hashes werden erkannt.</p></div>
-        <div class="t"><span class="badge" data-i18n="tools.read">liest</span><h3>check_proof</h3><p data-i18n="tools.check">Ist dieser Hash verankert, seit wann, in welchem Block?</p></div>
+        <div class="t write"><span class="badge w" data-i18n="tools.write">schreibt</span><h3>anchor_proof</h3><p data-i18n="tools.anchor">Hash eines Dokuments als Nachweis verankern. Bereits verankerte Hashes werden erkannt. Einen abgelaufenen Hash verankert das Werkzeug nur mit <code>reanchor_expired</code> erneut. Das fügt einen späteren Zeitstempel hinzu, maßgeblich bleibt der erste.</p></div>
+        <div class="t"><span class="badge" data-i18n="tools.read">liest</span><h3>check_proof</h3><p data-i18n="tools.check">Ist dieser Hash verankert, seit wann, in welchem Block? Nennt immer die erste Verankerung und zeigt eine spätere Registrierung getrennt an.</p></div>
         <div class="t"><span class="badge l" data-i18n="tools.server">im Server</span><h3>hash_text</h3><p data-i18n="tools.hash">SHA-256 eines kurzen Textes, berechnet im Server ohne Speicherung. Dateien und Vertrauliches besser lokal hashen.</p></div>
         <div class="t"><span class="badge" data-i18n="tools.read">liest</span><h3>get_anchoring_quota</h3><p data-i18n="tools.quota">Wie viele Nachweise sind heute noch frei?</p></div>
         <div class="t"><span class="badge" data-i18n="tools.read">liest</span><h3>lookup_name</h3><p data-i18n="tools.lookup">Wert, Inhaber und Ablauf eines Namens wie <code>d/…</code> oder <code>id/…</code>.</p></div>
         <div class="t"><span class="badge" data-i18n="tools.read">liest</span><h3>check_name_expiry</h3><p data-i18n="tools.expiry">Bis zu 25 Namen auf einmal: aktiv, läuft bald ab, abgelaufen oder frei, mit Datum.</p></div>
         <div class="t"><span class="badge" data-i18n="tools.read">liest</span><h3>get_name_history</h3><p data-i18n="tools.history">Jede Registrierung und Änderung eines Namens, neueste zuerst.</p></div>
-        <div class="t"><span class="badge" data-i18n="tools.read">liest</span><h3>search_names</h3><p data-i18n="tools.search">Namen nach Präfix auflisten, zum Beispiel alle <code>poe/</code>-Nachweise.</p></div>
+        <div class="t"><span class="badge" data-i18n="tools.read">liest</span><h3>search_names</h3><p data-i18n="tools.search">Namen nach Präfix auflisten, zum Beispiel alle <code>poe/</code>-Nachweise. Mit <code>include_expired</code> auch abgelaufene.</p></div>
         <div class="t"><span class="badge" data-i18n="tools.read">liest</span><h3>get_chain_status</h3><p data-i18n="tools.status">Blockhöhe, Synchronität, letzter Block, Fork-Prüfung, Blockabstand.</p></div>
         <div class="t"><span class="badge" data-i18n="tools.read">liest</span><h3>get_block</h3><p data-i18n="tools.block">Block nach Höhe oder Hash mit Zeit und Transaktionen.</p></div>
         <div class="t"><span class="badge" data-i18n="tools.read">liest</span><h3>get_transaction</h3><p data-i18n="tools.tx">Transaktion mit Ausgaben, Adressen und Namensoperationen.</p></div>
@@ -183,7 +183,7 @@
       <div class="cards">
         <div class="card"><div class="ic">#</div><h3 data-i18n="trust.c1t">Nur Hashes, keine Dateien</h3><p data-i18n="trust.c1">Der Server nimmt keine Dateien an. Aus einem SHA-256 lässt sich der Inhalt nicht zurückrechnen. Nur <code>hash_text</code> bekommt einen kurzen Text zu sehen und vergisst ihn sofort wieder.</p></div>
         <div class="card"><div class="ic">⏱</div><h3 data-i18n="trust.c2t">Frei, mit Kontingent</h3><p data-i18n="trust.c2">Verankern ist kostenlos: 10 Nachweise am Tag je Internetanschluss, für alle zusammen höchstens 200 am Tag. Mehr mit eigenem Schlüssel.</p></div>
-        <div class="card"><div class="ic">⛔</div><h3 data-i18n="trust.c3t">Keine Wallet-Funktionen</h3><p data-i18n="trust.c3">Der MCP-Server kann keine Coins senden und kennt weder private Schlüssel noch das Wallet. Er läuft als eigener Dienst getrennt von der Node.</p></div>
+        <div class="card"><div class="ic">⛔</div><h3 data-i18n="trust.c3t">Keine Wallet-Funktionen</h3><p data-i18n="trust.c3">Der MCP-Server kann keine Coins senden und kennt weder private Schlüssel noch das Wallet. Er läuft als eigener Dienst getrennt von der Node. Die Verankerungen bezahlt DOI Labs aus dem eigenen Wallet.</p></div>
         <div class="card"><div class="ic">⚠</div><h3 data-i18n="trust.c4t">Schutz vor Prompt-Injection</h3><p data-i18n="trust.c4">Namen und Werte, die Fremde in die Kette geschrieben haben, sind als <code>_untrusted</code> gekennzeichnet. Der Agent behandelt sie als Daten, nie als Anweisung.</p></div>
         <div class="card"><div class="ic">⎔</div><h3 data-i18n="trust.c5t">Eigene Node</h3><p data-i18n="trust.c5">Dahinter läuft eine vollständige Doichain-Core-Node v31.1.6 mit Fork-Prüfung, betrieben von DOI Labs.</p></div>
         <div class="card"><div class="ic">◌</div><h3 data-i18n="trust.c6t">Keine Cookies, kein Tracking</h3><p data-i18n="trust.c6">Diese Seite lädt nichts von Dritten und setzt keine Cookies. IP-Adressen stehen wie bei jedem Webserver in den Zugriffsprotokollen und zählen für das Tageskontingent. Inhalte werden nicht gespeichert.</p></div>
@@ -194,9 +194,10 @@
       <h2 data-i18n="faq.title">Häufige Fragen</h2>
       <div class="faq">
         <details><summary data-i18n="faq.q1">Was ist MCP?</summary><p data-i18n="faq.a1">Das Model Context Protocol ist ein offener Standard, über den KI-Anwendungen Werkzeuge und Daten anbinden. Einmal eingetragen, kann Ihr Agent die Doichain-Werkzeuge selbstständig nutzen.</p></details>
-        <details><summary data-i18n="faq.q2">Was kostet das?</summary><p data-i18n="faq.a2">Für Nutzer nichts. Jede Verankerung kostet eine kleine Gebühr in DOI, die DOI Labs trägt. Deshalb gibt es ein Tageskontingent je Anschluss.</p></details>
-        <details><summary data-i18n="faq.q3">Wie lange gilt ein Nachweis?</summary><p data-i18n="faq.a3">Dauerhaft. Der Name <code>poe/&lt;hash&gt;</code> ist rund 36.000 Blöcke aktiv (etwa sieben Monate), die Transaktion mit Zeitstempel bleibt aber für immer in der Blockchain. <code>check_proof</code> meldet danach <code>expired</code> und nennt weiter den ersten Zeitpunkt, auch wenn jemand denselben Hash später erneut verankert.</p></details>
-        <details><summary data-i18n="faq.q4">Brauche ich DOI oder eine Wallet?</summary><p data-i18n="faq.a4">Nein. Der Server verankert über die Node von DOI Labs. Wer Namen selbst besitzen möchte, nutzt die REST-API mit eigenem Schlüssel oder eine eigene Wallet.</p></details>
+        <details><summary data-i18n="faq.q2">Was kostet das?</summary><p data-i18n="faq.a2">Für Nutzer nichts. Jede Verankerung kostet eine kleine Gebühr und 0,01 DOI für den Namen. Die 0,01 DOI sind kein Pfand und verfallen mit dem Ablauf des Namens. Beides bezahlt DOI Labs aus dem eigenen Wallet, deshalb gibt es ein Tageskontingent je Anschluss.</p></details>
+        <details><summary data-i18n="faq.q3">Wie lange gilt ein Nachweis?</summary><p data-i18n="faq.a3">Der Zeitstempel bleibt dauerhaft in der Kettenhistorie. Der Name <code>poe/&lt;hash&gt;</code> ist dagegen nur 36.000 Blöcke aktiv (rund 250 Tage bei zehn Minuten je Block). Danach ist er frei und könnte erneut registriert werden, auch von jemand anderem. <code>check_proof</code> nennt immer die erste Verankerung als Nachweiszeitpunkt und zeigt eine spätere Registrierung getrennt an.</p></details>
+        <details><summary data-i18n="faq.q4">Brauche ich DOI oder ein Wallet?</summary><p data-i18n="faq.a4">Nein. Der Server verankert über die Node von DOI Labs. Wer Namen selbst besitzen möchte, nutzt die REST-API mit eigenem Schlüssel oder ein eigenes Wallet.</p></details>
+        <details><summary data-i18n="faq.q8">Wem gehört ein Nachweis?</summary><p data-i18n="faq.a8">Den Namen <code>poe/&lt;hash&gt;</code> hält das Wallet von DOI Labs, das auch die Gebühr und die 0,01 DOI für den Namen bezahlt. Der Nachweis zeigt, dass ein Dokument mit diesem Hash spätestens zu diesem Zeitpunkt existierte, nicht, wer es eingereicht hat.</p></details>
         <details><summary data-i18n="faq.q5">Was sieht die Öffentlichkeit?</summary><p data-i18n="faq.a5">Den Hash, den Zeitpunkt und eine optionale Notiz oder einen Dateinamen, wenn Sie das ausdrücklich möchten. Keine Inhalte, keine Personendaten.</p></details>
         <details><summary data-i18n="faq.q7">Warum ist das Kontingent in Claude im Browser oder in ChatGPT schnell erschöpft?</summary><p data-i18n="faq.a7">Diese Apps verbinden sich aus den Rechenzentren ihrer Anbieter. Alle ihre Nutzer teilen sich deshalb das Kontingent dieser Adressen. Lesen und Prüfen sind unbegrenzt. Wer regelmäßig verankert, nutzt Claude Code, Cursor oder VS Code (Verbindung vom eigenen Rechner) oder einen eigenen Schlüssel.</p></details>
         <details><summary data-i18n="faq.q6">Gibt es das auch ohne KI?</summary><p data-i18n="faq.a6">Ja. <a href="https://verifile.it/">Verifile</a> ist die Web-App zum Ziehen und Ablegen, die <a href="/">Doichain REST-API</a> die Schnittstelle für eigene Programme.</p></details>
