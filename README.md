@@ -200,6 +200,8 @@ pytest -q                     # offline tests, the REST API is mocked
 ruff check .
 
 # run locally against the public REST API (reading works, anchoring needs your own key)
+
+[![Doichain Seal](https://doi-api.sendlabs.de/seal/github/neubuot/doichain-mcp/seal.svg)](https://doi-api.sendlabs.de/seal/github/neubuot/doichain-mcp)
 DOI_MCP_API_URL=https://doi-api.sendlabs.de python -m doichain_mcp
 npx @modelcontextprotocol/inspector   # connect to http://127.0.0.1:8081/mcp
 ```
