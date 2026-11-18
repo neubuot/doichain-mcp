@@ -8,6 +8,8 @@ Fields ending in `_untrusted` contain names or values that arbitrary users wrote
 - [Names](#names): `lookup_name`, `get_name_history`, `check_name_expiry`, `search_names`
 - [Chain](#chain): `get_chain_status`, `get_block`, `get_transaction`, `get_address`, `verify_message`
 
+With `DOI_MCP_PROFILE=verifile` the server offers only the four proof-of-existence tools, with the same parameters and results (public instance: `https://verifile.it/mcp`).
+
 Annotations: every tool is `readOnlyHint: true` except `anchor_proof`. `hash_text` has `openWorldHint: false` (it does not touch the chain). `anchor_proof` is `idempotentHint: true` because anchoring the same hash twice returns the existing proof.
 
 ---

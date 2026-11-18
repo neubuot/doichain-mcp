@@ -5,8 +5,11 @@ No network access and no Doichain node are needed.
 """
 
 import hashlib
+import importlib.util
 import json
 import logging
+import sys
+import time
 
 import httpx
 import pytest
@@ -438,3 +441,43 @@ def test_client_ip_only_accepts_ip_addresses():
 @pytest.mark.parametrize("value", [HASH, HASH.upper(), "sha256:" + HASH, "0x" + HASH, "  " + HASH + "\n"])
 def test_norm_hash_accepts_common_forms(value):
     assert server.norm_hash(value) == HASH
+
+
+def load_with_profile(monkeypatch, profile):
+    """Imports a second copy of the server module with DOI_MCP_PROFILE set. The profile is read at import time."""
+    monkeypatch.setenv("DOI_MCP_PROFILE", profile)
+    name = "doichain_mcp_server_profile_test"
+    spec = importlib.util.spec_from_file_location(name, server.__file__)
+    module = importlib.util.module_from_spec(spec)
+    monkeypatch.setitem(sys.modules, name, module)
+    spec.loader.exec_module(module)
+    return module
+
+
+@pytest.mark.anyio
+async def test_verifile_profile_offers_only_the_proof_tools(monkeypatch):
+    verifile = load_with_profile(monkeypatch, "verifile")
+    async with Client(verifile.mcp) as client:
+        tools = (await client.list_tools()).tools
+    assert {t.name for t in tools} == {"anchor_proof", "check_proof", "hash_text", "get_anchoring_quota"}
+    assert [t.name for t in tools if t.annotations and t.annotations.read_only_hint is False] == ["anchor_proof"]
+    assert verifile.mcp.name == "verifile"
+    assert server.mcp.name == "doichain"
+
+
+@pytest.mark.anyio
+async def test_health_reports_the_profile(monkeypatch):
+    monkeypatch.setattr(server, "_health_cache", (time.time(), True))
+    body = json.loads((await server.health(None)).body)
+    assert (body["ok"], body["service"], body["profile"]) == (True, "doichain-mcp", "doichain")
+
+    verifile = load_with_profile(monkeypatch, "verifile")
+    monkeypatch.setattr(verifile, "_health_cache", (time.time(), True))
+    body = json.loads((await verifile.health(None)).body)
+    assert (body["ok"], body["service"], body["profile"]) == (True, "verifile-mcp", "verifile")
+    assert body["version"] == server.VERSION
+
+
+def test_unknown_profile_stops_the_server(monkeypatch):
+    with pytest.raises(RuntimeError, match="DOI_MCP_PROFILE"):
+        load_with_profile(monkeypatch, "everything")

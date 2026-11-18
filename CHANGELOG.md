@@ -3,6 +3,23 @@
 All notable changes to the Doichain MCP server. The format follows [Keep a Changelog](https://keepachangelog.com/),
 versions follow [Semantic Versioning](https://semver.org/).
 
+## [1.6.0] - 2026-11-18
+
+One code base, two services: the server can run with a reduced tool set under the name Verifile. Nothing changes for
+existing installations, the default profile offers all 13 tools as before.
+
+### Added
+- `DOI_MCP_PROFILE` selects the tool set. `doichain` (default) offers all tools. `verifile` offers only the four
+  proof-of-existence tools (`hash_text`, `check_proof`, `anchor_proof`, `get_anchoring_quota`) and identifies itself
+  as `verifile` with its own title, description, instructions, website and icon. Any other value stops the server at
+  startup.
+- `/health` reports the active `profile`. `service` is `verifile-mcp` for the verifile profile.
+- A public instance with the verifile profile runs at `https://verifile.it/mcp`, described at
+  <https://verifile.it/developers/>. It shares the anchoring quota of the public poe key with the Doichain instance.
+
+### Changed
+- The default of `DOI_MCP_ALLOWED_HOSTS` also contains `verifile.it`.
+
 ## [1.5.0] - 2026-09-27
 
 Fixes from an external review by @NiKrause (issues #3 and #4). Requires Doichain REST API 1.5.0 or later for the

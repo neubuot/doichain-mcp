@@ -120,6 +120,8 @@ Try it without an AI client using the [MCP Inspector](https://github.com/modelco
 
 All tools return structured JSON (`structuredContent`) and carry MCP tool annotations. Only `anchor_proof` is not read-only. Parameters, return fields and examples: **[docs/tools.md](docs/tools.md)**.
 
+**Verifile profile:** with `DOI_MCP_PROFILE=verifile` the same server offers only the four proof-of-existence tools and identifies itself as Verifile. A public instance runs at `https://verifile.it/mcp`, documented at [verifile.it/developers](https://verifile.it/developers/).
+
 ## How a proof of existence works
 
 ```mermaid

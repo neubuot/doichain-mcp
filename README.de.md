@@ -46,6 +46,8 @@ Im Browser zeigt dieselbe Adresse die [Landingpage](https://doi-api.sendlabs.de/
 | `check_name_expiry` | bis zu 25 Namen auf einmal: aktiv, läuft bald ab, abgelaufen oder frei, mit Datum |
 | `get_chain_status`, `get_block`, `get_transaction`, `get_address`, `verify_message` | Zustand der Kette, Blöcke, Transaktionen, Guthaben, signierte Nachrichten |
 
+**Profil Verifile:** Mit `DOI_MCP_PROFILE=verifile` bietet derselbe Server nur die vier Nachweis-Werkzeuge an und meldet sich als Verifile. Eine öffentliche Instanz läuft unter `https://verifile.it/mcp`, beschrieben auf [verifile.it/developers](https://verifile.it/developers/).
+
 ## Was ein Nachweis belegt
 
 - Der Zeitstempel bleibt dauerhaft in der Blockchain, die Verankerungstransaktion und ihre Blockzeit gehen nicht verloren.
