@@ -1,0 +1,24 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.neubuot/verifile",
+  "title": "Verifile",
+  "description": "Proof of existence for files and texts: anchor a SHA-256 on the Doichain and verify it later",
+  "version": "1.6.0",
+  "websiteUrl": "https://verifile.it/developers/",
+  "repository": {
+    "url": "https://github.com/neubuot/doichain-mcp",
+    "source": "github"
+  },
+  "icons": [
+    {
+      "src": "https://verifile.it/icon.svg",
+      "mimeType": "image/svg+xml"
+    }
+  ],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://verifile.it/mcp"
+    }
+  ]
+}

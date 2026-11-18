@@ -3,6 +3,13 @@
 All notable changes to the Doichain MCP server. The format follows [Keep a Changelog](https://keepachangelog.com/),
 versions follow [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+- Registry entry `io.github.neubuot/verifile` (`server.verifile.json`) for the public Verifile instance at
+  `https://verifile.it/mcp`. A tag publishes both entries, and the publish workflow can be started manually for one
+  of them. CI validates both files.
+
 ## [1.6.0] - 2026-11-18
 
 One code base, two services: the server can run with a reduced tool set under the name Verifile. Nothing changes for

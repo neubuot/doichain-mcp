@@ -10,11 +10,13 @@ import json
 import logging
 import sys
 import time
+from pathlib import Path
 
 import httpx
 import pytest
 from mcp import Client
 
+import doichain_mcp
 from doichain_mcp import server
 
 HASH = "f712d10e8eb76851bc4d5c4ffd8e76430c2257b167548f2f65ca5fdf9e8de1c8"  # registered again after expiry
@@ -481,3 +483,14 @@ async def test_health_reports_the_profile(monkeypatch):
 def test_unknown_profile_stops_the_server(monkeypatch):
     with pytest.raises(RuntimeError, match="DOI_MCP_PROFILE"):
         load_with_profile(monkeypatch, "everything")
+
+
+def test_registry_entries_match_the_package():
+    """server.json and server.verifile.json are published together, so they must agree with the package."""
+    root = Path(server.__file__).resolve().parent.parent
+    entries = [json.loads((root / name).read_text(encoding="utf-8")) for name in ("server.json", "server.verifile.json")]
+    assert [e["name"] for e in entries] == ["io.github.neubuot/doichain", "io.github.neubuot/verifile"]
+    assert {e["version"] for e in entries} == {doichain_mcp.__version__, server.VERSION}
+    urls = [remote["url"] for e in entries for remote in e["remotes"]]
+    assert urls == ["https://doi-api.sendlabs.de/mcp", "https://verifile.it/mcp"]
+    assert all(len(e["description"]) <= 100 for e in entries)

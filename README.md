@@ -120,7 +120,7 @@ Try it without an AI client using the [MCP Inspector](https://github.com/modelco
 
 All tools return structured JSON (`structuredContent`) and carry MCP tool annotations. Only `anchor_proof` is not read-only. Parameters, return fields and examples: **[docs/tools.md](docs/tools.md)**.
 
-**Verifile profile:** with `DOI_MCP_PROFILE=verifile` the same server offers only the four proof-of-existence tools and identifies itself as Verifile. A public instance runs at `https://verifile.it/mcp`, documented at [verifile.it/developers](https://verifile.it/developers/).
+**Verifile profile:** with `DOI_MCP_PROFILE=verifile` the same server offers only the four proof-of-existence tools and identifies itself as Verifile. A public instance runs at `https://verifile.it/mcp`, documented at [verifile.it/developers](https://verifile.it/developers/) and listed in the MCP Registry as `io.github.neubuot/verifile` (`server.verifile.json`).
 
 ## How a proof of existence works
 
@@ -208,7 +208,7 @@ DOI_MCP_API_URL=https://doi-api.sendlabs.de python -m doichain_mcp
 npx @modelcontextprotocol/inspector   # connect to http://127.0.0.1:8081/mcp
 ```
 
-Releases follow semantic versioning. Pushing a tag `vX.Y.Z` runs the tests and publishes `server.json` to the [official MCP Registry](https://registry.modelcontextprotocol.io) via GitHub Actions (OIDC, no secrets). The tag, `server.json` and `pyproject.toml` must carry the same version. See [CONTRIBUTING.md](CONTRIBUTING.md) and [CHANGELOG.md](CHANGELOG.md).
+Releases follow semantic versioning. Pushing a tag `vX.Y.Z` runs the tests and publishes `server.json` and `server.verifile.json` to the [official MCP Registry](https://registry.modelcontextprotocol.io) via GitHub Actions (OIDC, no secrets). The tag, both files and `pyproject.toml` must carry the same version. See [CONTRIBUTING.md](CONTRIBUTING.md) and [CHANGELOG.md](CHANGELOG.md).
 
 ## Related
 

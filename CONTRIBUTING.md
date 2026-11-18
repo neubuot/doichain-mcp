@@ -24,10 +24,11 @@ to the server in process. Please add a test for every behavior change.
 
 ## Releases
 
-1. Update the version in `pyproject.toml`, `server.json`, `doichain_mcp/__init__.py` and `VERSION` in
+1. Update the version in `pyproject.toml`, `server.json`, `server.verifile.json`, `doichain_mcp/__init__.py` and `VERSION` in
    `doichain_mcp/server.py`, and add a `CHANGELOG.md` entry.
 2. Merge to `main`, then push a tag `vX.Y.Z`.
 3. The `Publish` workflow runs the tests, checks that the versions match the tag and publishes `server.json`
-   to the MCP Registry via GitHub OIDC.
+   (entry `io.github.neubuot/doichain`) and `server.verifile.json` (entry `io.github.neubuot/verifile`) to the
+   MCP Registry via GitHub OIDC. Started manually, it publishes one of the two from `main`.
 
 Report security problems privately, see [SECURITY.md](SECURITY.md).

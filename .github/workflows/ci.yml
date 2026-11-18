@@ -33,7 +33,7 @@ jobs:
         run: pytest -q
 
   server-json:
-    name: Validate server.json
+    name: Validate server.json and server.verifile.json
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -44,4 +44,6 @@ jobs:
           curl -fsSL "$base/registry_${MCP_PUBLISHER_VERSION}_checksums.txt" | grep ' mcp-publisher_linux_amd64.tar.gz$' | sha256sum -c -
           tar xzf mcp-publisher_linux_amd64.tar.gz mcp-publisher
       - name: Validate
-        run: ./mcp-publisher validate
+        run: |
+          ./mcp-publisher validate
+          ./mcp-publisher validate server.verifile.json
